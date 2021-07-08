@@ -226,14 +226,15 @@ string fasterDecode(string str)
 
 string random_string(int length)
 {
-    string str("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[],./<>?{}");
-
-    random_device rd;
-    mt19937 generator(rd());
-
-    shuffle(str.begin(), str.end(), generator);
-
-    return str.substr(0, length);
+    auto randchar = []() -> char
+    {
+        const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[],./<>?{}";
+        const size_t max_index = (sizeof(charset) - 1);
+        return charset[rand() % max_index];
+    };
+    string str(length, 0);
+    generate_n(str.begin(), length, randchar);
+    return str;
 }
 
 /* base64 encode and decode */
